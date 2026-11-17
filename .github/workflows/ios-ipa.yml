@@ -22,6 +22,7 @@ jobs:
 
       - name: Build unsigned iOS app
         run: |
+          set +e
           xcodebuild \
             -project SoundCloudPlayer.xcodeproj \
             -scheme SoundCloudPlayer \
@@ -30,7 +31,16 @@ jobs:
             -derivedDataPath "$RUNNER_TEMP/DerivedData" \
             PRODUCT_BUNDLE_IDENTIFIER=com.yukovalevb2016.playr \
             CODE_SIGNING_ALLOWED=NO \
-            build
+            build 2>&1 | tee "$RUNNER_TEMP/xcodebuild.log"
+          BUILD_STATUS=${PIPESTATUS[0]}
+          if [ "$BUILD_STATUS" -ne 0 ]; then
+            echo "## Xcode build diagnostics" >> "$GITHUB_STEP_SUMMARY"
+            grep -E 'error:|warning:|BUILD (FAILED|SUCCEEDED)' "$RUNNER_TEMP/xcodebuild.log" \
+              | tail -n 80 \
+              | tee -a "$GITHUB_STEP_SUMMARY" \
+              | while IFS= read -r line; do echo "::error::$line"; done
+            exit "$BUILD_STATUS"
+          fi
 
       - name: Package unsigned IPA for AltStore
         run: |
