@@ -31,3 +31,14 @@ Native SwiftUI iPhone client shell for a SoundCloud integration. This repository
 Open `SoundCloudPlayer.xcodeproj` in Xcode 26 or later. Select an iPhone simulator or connected iPhone, set a unique bundle identifier and a development team under Signing & Capabilities, then run. A real device requires an Apple Developer signing identity (free Personal Team is suitable for personal device testing with limitations; paid Apple Developer Program membership is generally required for TestFlight/App Store distribution).
 
 To archive, select Any iOS Device (arm64) and Product > Archive. In Organizer choose Distribute App and follow the signing/export workflow. IPA export/signing has not been performed by this project.
+
+## GitHub Actions IPA
+
+The workflow `.github/workflows/ios-ipa.yml` runs manually from the Actions tab and exports an **Ad Hoc signed IPA**. Before running it, create an App ID with bundle identifier `com.yukovalevb2016.playr`, register each test iPhone UDID, and create an Apple Distribution certificate plus an Ad Hoc provisioning profile for that App ID. Add these repository Actions secrets:
+
+- `APPLE_TEAM_ID`: Apple Developer Team ID.
+- `IOS_CERTIFICATE_BASE64`: base64-encoded `.p12` Apple Distribution certificate.
+- `IOS_CERTIFICATE_PASSWORD`: password used when exporting the `.p12`.
+- `IOS_PROVISIONING_PROFILE_BASE64`: base64-encoded Ad Hoc `.mobileprovision` profile.
+
+The IPA is uploaded as a workflow artifact named `SoundCloudPlayer-IPA` after a successful run. These signing credentials are not included in the repository. The GitHub workflow has been added, but no IPA is built until the owner configures the secrets and starts the workflow.
