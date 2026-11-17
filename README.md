@@ -32,13 +32,6 @@ Open `SoundCloudPlayer.xcodeproj` in Xcode 26 or later. Select an iPhone simulat
 
 To archive, select Any iOS Device (arm64) and Product > Archive. In Organizer choose Distribute App and follow the signing/export workflow. IPA export/signing has not been performed by this project.
 
-## GitHub Actions IPA
+## GitHub Actions IPA for AltStore
 
-The workflow `.github/workflows/ios-ipa.yml` runs manually from the Actions tab and exports an **Ad Hoc signed IPA**. Before running it, create an App ID with bundle identifier `com.yukovalevb2016.playr`, register each test iPhone UDID, and create an Apple Distribution certificate plus an Ad Hoc provisioning profile for that App ID. Add these repository Actions secrets:
-
-- `APPLE_TEAM_ID`: Apple Developer Team ID.
-- `IOS_CERTIFICATE_BASE64`: base64-encoded `.p12` Apple Distribution certificate.
-- `IOS_CERTIFICATE_PASSWORD`: password used when exporting the `.p12`.
-- `IOS_PROVISIONING_PROFILE_BASE64`: base64-encoded Ad Hoc `.mobileprovision` profile.
-
-The IPA is uploaded as a workflow artifact named `SoundCloudPlayer-IPA` after a successful run. These signing credentials are not included in the repository. The GitHub workflow has been added, but no IPA is built until the owner configures the secrets and starts the workflow.
+The workflow `.github/workflows/ios-ipa.yml` builds an **unsigned IPA** on every push to `main` and can also be started manually from the Actions tab. No Apple signing secrets are needed: download the `SoundCloudPlayer-unsigned-IPA` artifact from a successful workflow run and import it into AltStore, which signs it for sideloading with the user's Apple ID. This artifact is not App Store- or TestFlight-ready.

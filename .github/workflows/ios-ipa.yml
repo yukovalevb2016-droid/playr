@@ -1,6 +1,8 @@
 name: Build iOS IPA
 
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 
 jobs:
@@ -14,88 +16,35 @@ jobs:
         run: |
           xcodebuild -version
 
-      - name: Import signing certificate
-        env:
-          CERTIFICATE_BASE64: ${{ secrets.IOS_CERTIFICATE_BASE64 }}
-          CERTIFICATE_PASSWORD: ${{ secrets.IOS_CERTIFICATE_PASSWORD }}
+      - name: List project schemes
         run: |
-          if [ -z "$CERTIFICATE_BASE64" ] || [ -z "$CERTIFICATE_PASSWORD" ]; then
-            echo "Missing IOS_CERTIFICATE_BASE64 or IOS_CERTIFICATE_PASSWORD repository secrets."
-            exit 1
-          fi
-          KEYCHAIN_PATH="$RUNNER_TEMP/build.keychain-db"
-          CERTIFICATE_PATH="$RUNNER_TEMP/certificate.p12"
-          echo "$CERTIFICATE_BASE64" | base64 --decode > "$CERTIFICATE_PATH"
-          security create-keychain -p "$CERTIFICATE_PASSWORD" "$KEYCHAIN_PATH"
-          security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
-          security unlock-keychain -p "$CERTIFICATE_PASSWORD" "$KEYCHAIN_PATH"
-          security import "$CERTIFICATE_PATH" -P "$CERTIFICATE_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH"
-          security list-keychain -d user -s "$KEYCHAIN_PATH"
+          xcodebuild -project SoundCloudPlayer.xcodeproj -list
 
-      - name: Install provisioning profile
-        env:
-          PROFILE_BASE64: ${{ secrets.IOS_PROVISIONING_PROFILE_BASE64 }}
+      - name: Build unsigned iOS app
         run: |
-          if [ -z "$PROFILE_BASE64" ]; then
-            echo "Missing IOS_PROVISIONING_PROFILE_BASE64 repository secret."
-            exit 1
-          fi
-          PROFILE_PATH="$RUNNER_TEMP/profile.mobileprovision"
-          DECODED_PROFILE="$RUNNER_TEMP/profile.plist"
-          echo "$PROFILE_BASE64" | base64 --decode > "$PROFILE_PATH"
-          mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
-          security cms -D -i "$PROFILE_PATH" > "$DECODED_PROFILE"
-          PROFILE_UUID=$(/usr/libexec/PlistBuddy -c 'Print UUID' "$DECODED_PROFILE")
-          cp "$PROFILE_PATH" "$HOME/Library/MobileDevice/Provisioning Profiles/$PROFILE_UUID.mobileprovision"
-          echo "PROFILE_UUID=$PROFILE_UUID" >> "$GITHUB_ENV"
-
-      - name: Archive
-        env:
-          TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
-        run: |
-          if [ -z "$TEAM_ID" ]; then
-            echo "Missing APPLE_TEAM_ID repository secret."
-            exit 1
-          fi
           xcodebuild \
             -project SoundCloudPlayer.xcodeproj \
             -scheme SoundCloudPlayer \
             -configuration Release \
             -destination 'generic/platform=iOS' \
-            -archivePath "$RUNNER_TEMP/SoundCloudPlayer.xcarchive" \
+            -derivedDataPath "$RUNNER_TEMP/DerivedData" \
             PRODUCT_BUNDLE_IDENTIFIER=com.yukovalevb2016.playr \
-            DEVELOPMENT_TEAM="$TEAM_ID" \
-            CODE_SIGN_STYLE=Manual \
-            CODE_SIGN_IDENTITY="Apple Distribution" \
-            PROVISIONING_PROFILE_SPECIFIER="$PROFILE_UUID" \
-            archive
+            CODE_SIGNING_ALLOWED=NO \
+            build
 
-      - name: Export IPA
-        env:
-          TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      - name: Package unsigned IPA for AltStore
         run: |
-          cat > "$RUNNER_TEMP/ExportOptions.plist" <<EOF
-          <?xml version="1.0" encoding="UTF-8"?>
-          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-          <plist version="1.0"><dict>
-            <key>method</key><string>ad-hoc</string>
-            <key>teamID</key><string>${TEAM_ID}</string>
-            <key>provisioningProfiles</key><dict>
-              <key>com.yukovalevb2016.playr</key><string>${PROFILE_UUID}</string>
-            </dict>
-            <key>signingStyle</key><string>manual</string>
-            <key>compileBitcode</key><false/>
-          </dict></plist>
-          EOF
-          xcodebuild -exportArchive \
-            -archivePath "$RUNNER_TEMP/SoundCloudPlayer.xcarchive" \
-            -exportPath "$RUNNER_TEMP/export" \
-            -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist"
+          APP_PATH="$RUNNER_TEMP/DerivedData/Build/Products/Release-iphoneos/SoundCloudPlayer.app"
+          test -d "$APP_PATH"
+          mkdir -p "$RUNNER_TEMP/ipa/Payload"
+          ditto "$APP_PATH" "$RUNNER_TEMP/ipa/Payload/SoundCloudPlayer.app"
+          cd "$RUNNER_TEMP/ipa"
+          /usr/bin/zip -qry "$RUNNER_TEMP/SoundCloudPlayer-unsigned.ipa" Payload
 
       - name: Upload IPA artifact
         uses: actions/upload-artifact@v4
         with:
-          name: SoundCloudPlayer-IPA
-          path: ${{ runner.temp }}/export/*.ipa
+          name: SoundCloudPlayer-unsigned-IPA
+          path: ${{ runner.temp }}/SoundCloudPlayer-unsigned.ipa
           if-no-files-found: error
           retention-days: 14
