@@ -1,0 +1,43 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {};
+	objectVersion = 56;
+	objects = {
+		A10000000000000000000001 /* Project object */ = {isa = PBXProject; buildConfigurationList = A10000000000000000000002; compatibilityVersion = "Xcode 14.0"; developmentRegion = en; mainGroup = A10000000000000000000003; productRefGroup = A10000000000000000000004; projectDirPath = ""; projectRoot = ""; targets = (A10000000000000000000005, A10000000000000000000006, ); };
+		A10000000000000000000002 = {isa = XCConfigurationList; buildConfigurations = (A10000000000000000000007, A10000000000000000000008, ); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		A10000000000000000000003 = {isa = PBXGroup; children = (A10000000000000000000009, A1000000000000000000000A, A10000000000000000000004, ); sourceTree = "<group>"; };
+		A10000000000000000000004 = {isa = PBXGroup; children = (A1000000000000000000000B, ); name = Products; sourceTree = "<group>"; };
+		A10000000000000000000005 /* App */ = {isa = PBXNativeTarget; buildConfigurationList = A1000000000000000000000C; buildPhases = (A1000000000000000000000D, A1000000000000000000000E, ); buildRules = (); dependencies = (); name = SoundCloudPlayer; productName = SoundCloudPlayer; productReference = A1000000000000000000000B; productType = "com.apple.product-type.application"; };
+		A10000000000000000000006 /* Tests */ = {isa = PBXNativeTarget; buildConfigurationList = A1000000000000000000000F; buildPhases = (A10000000000000000000010, A10000000000000000000011, ); buildRules = (); dependencies = (A10000000000000000000012, ); name = SoundCloudPlayerTests; productName = SoundCloudPlayerTests; productReference = A10000000000000000000013; productType = "com.apple.product-type.bundle.unit-test"; };
+		A10000000000000000000009 = {isa = PBXGroup; children = (A10000000000000000000014, A10000000000000000000015, A10000000000000000000016, A10000000000000000000021, ); path = SoundCloudPlayer; sourceTree = "<group>"; };
+		A1000000000000000000000A = {isa = PBXGroup; children = (A10000000000000000000017, ); path = SoundCloudPlayerTests; sourceTree = "<group>"; };
+		A1000000000000000000000B = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SoundCloudPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A10000000000000000000013 = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SoundCloudPlayerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A10000000000000000000014 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundCloudPlayerApp.swift; sourceTree = "<group>"; };
+		A10000000000000000000015 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		A10000000000000000000016 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViews.swift; sourceTree = "<group>"; };
+		A10000000000000000000017 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundCloudPlayerTests.swift; sourceTree = "<group>"; };
+		A10000000000000000000021 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerIntents.swift; sourceTree = "<group>"; };
+		A1000000000000000000000D = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (A10000000000000000000018, A10000000000000000000019, A1000000000000000000001A, A10000000000000000000022, ); runOnlyForDeploymentPostprocessing = 0; };
+		A1000000000000000000000E = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		A10000000000000000000010 = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (A1000000000000000000001B, ); runOnlyForDeploymentPostprocessing = 0; };
+		A10000000000000000000011 = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		A10000000000000000000018 = {isa = PBXBuildFile; fileRef = A10000000000000000000014; };
+		A10000000000000000000019 = {isa = PBXBuildFile; fileRef = A10000000000000000000015; };
+		A1000000000000000000001A = {isa = PBXBuildFile; fileRef = A10000000000000000000016; };
+		A1000000000000000000001B = {isa = PBXBuildFile; fileRef = A10000000000000000000017; };
+		A10000000000000000000022 = {isa = PBXBuildFile; fileRef = A10000000000000000000021; };
+		A10000000000000000000012 = {isa = PBXTargetDependency; target = A10000000000000000000005; targetProxy = A1000000000000000000001C; };
+		A1000000000000000000001C = {isa = PBXContainerItemProxy; containerPortal = A10000000000000000000001; proxyType = 1; remoteGlobalIDString = A10000000000000000000005; remoteInfo = SoundCloudPlayer; };
+		A10000000000000000000007 /* Debug */ = {isa = XCBuildConfiguration; buildSettings = {IPHONEOS_DEPLOYMENT_TARGET = 17.0; SDKROOT = iphoneos; SWIFT_VERSION = 5.0; TARGETED_DEVICE_FAMILY = "1,2"; }; name = Debug; };
+		A10000000000000000000008 /* Release */ = {isa = XCBuildConfiguration; buildSettings = {IPHONEOS_DEPLOYMENT_TARGET = 17.0; SDKROOT = iphoneos; SWIFT_VERSION = 5.0; TARGETED_DEVICE_FAMILY = "1,2"; }; name = Release; };
+		A1000000000000000000000C = {isa = XCConfigurationList; buildConfigurations = (A1000000000000000000001D, A1000000000000000000001E, ); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		A1000000000000000000000F = {isa = XCConfigurationList; buildConfigurations = (A1000000000000000000001F, A10000000000000000000020, ); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		A1000000000000000000001D = {isa = XCBuildConfiguration; buildSettings = {GENERATE_INFOPLIST_FILE = YES; INFOPLIST_KEY_CFBundleDisplayName = "SoundCloud Player"; INFOPLIST_KEY_UIUserInterfaceStyle = Automatic; PRODUCT_BUNDLE_IDENTIFIER = com.example.SoundCloudPlayer; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_VERSION = 5.0; IPHONEOS_DEPLOYMENT_TARGET = 17.0; TARGETED_DEVICE_FAMILY = "1"; }; name = Debug; };
+		A1000000000000000000001E = {isa = XCBuildConfiguration; buildSettings = {GENERATE_INFOPLIST_FILE = YES; INFOPLIST_KEY_CFBundleDisplayName = "SoundCloud Player"; INFOPLIST_KEY_UIUserInterfaceStyle = Automatic; PRODUCT_BUNDLE_IDENTIFIER = com.example.SoundCloudPlayer; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_VERSION = 5.0; IPHONEOS_DEPLOYMENT_TARGET = 17.0; TARGETED_DEVICE_FAMILY = "1"; }; name = Release; };
+		A1000000000000000000001F = {isa = XCBuildConfiguration; buildSettings = {GENERATE_INFOPLIST_FILE = YES; PRODUCT_BUNDLE_IDENTIFIER = com.example.SoundCloudPlayerTests; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_VERSION = 5.0; IPHONEOS_DEPLOYMENT_TARGET = 17.0; GENERATE_INFOPLIST_FILE = YES; }; name = Debug; };
+		A10000000000000000000020 = {isa = XCBuildConfiguration; buildSettings = {GENERATE_INFOPLIST_FILE = YES; PRODUCT_BUNDLE_IDENTIFIER = com.example.SoundCloudPlayerTests; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_VERSION = 5.0; IPHONEOS_DEPLOYMENT_TARGET = 17.0; GENERATE_INFOPLIST_FILE = YES; }; name = Release; };
+	};
+	rootObject = A10000000000000000000001;
+}
