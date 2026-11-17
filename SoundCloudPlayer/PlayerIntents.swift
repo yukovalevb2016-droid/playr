@@ -45,10 +45,10 @@ struct PlayFavoriteTrackIntent: AppIntent {
         guard let savedTrack = PlayerModel.shared.favoriteTrack(id: track.id) else {
             return .result(dialog: "Этот трек больше не находится в избранном.")
         }
-        return await MainActor.run {
+        await MainActor.run {
             AppIntentRouter.shared.playFavoriteRequest = savedTrack.id
-            return .result(dialog: "Открываю приложение и запускаю \(savedTrack.title).")
         }
+        return .result(dialog: "Открываю приложение и запускаю \(savedTrack.title).")
     }
 }
 
